@@ -1,0 +1,40 @@
+name: "P2P-TUNNEL-DOCKER"
+on:
+  push:
+    branches:
+      - master
+  
+jobs:
+  build-client:
+    runs-on: ubuntu-latest
+    name: P2P-TUNNEL-CLIENT
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Build and publish image
+        uses: ilteoood/docker_buildx@master
+        with:
+          publish: true
+          imageName: k1483162508/p2ptunnel
+          dockerFile: docker/Dockerfile_Client
+          platform: linux/amd64,linux/arm64,linux/arm
+          tag: client
+          dockerUser: ${{ secrets.DOCKER_USERNAME }}
+          dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
+  
+  build-server:
+    runs-on: ubuntu-latest
+    name: P2P-TUNNEL-SERVER
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@master
+      - name: Build and publish image
+        uses: ilteoood/docker_buildx@master
+        with:
+          publish: true
+          imageName: k1483162508/p2ptunnel
+          dockerFile: docker/Dockerfile_Server
+          platform: linux/amd64,linux/arm64,linux/arm
+          tag: server
+          dockerUser: ${{ secrets.DOCKER_USERNAME }}
+          dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
