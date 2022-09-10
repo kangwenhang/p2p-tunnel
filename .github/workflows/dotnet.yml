@@ -40,13 +40,15 @@ jobs:
         dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/osx-x64-single/server	-r osx-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
         dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/osx-arm64-single/client	-r osx-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
         dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/osx-arm64-single/server	-r osx-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        tar -cvf any.tgz -C ./publish/any * &&
-        tar -cvf win-x64-single.tgz -C ./publish/win-x64-single * &&
-        tar -cvf win-arm64-single.tgz -C ./publish/win-arm64-single * &&
-        tar -cvf linux-x64-single.tgz -C ./publish/linux-x64-single * &&
-        tar -cvf linux-arm64-single.tgz -C ./publish/linux-arm64-single * &&
-        tar -cvf osx-x64-single.tgz -C ./publish/osx-x64-single * &&
-        tar -cvf osx-arm64-single.tgz -C ./publish/osx-arm64-single * 
+        cd publish
+        winrar a -r ../any.zip any &
+        winrar a -r ../win-x64-single.zip win-x64-single &
+        winrar a -r ../win-arm64-single.zip win-arm64-single &
+        winrar a -r ../linux-x64-single.zip linux-x64-single &
+        winrar a -r ../linux-arm64-single.zip linux-arm64-single &
+        winrar a -r ../osx-x64-single.zip osx-x64-single &
+        winrar a -r ../osx-arm64-single.zip osx-arm64-single &
+        cd ../
     
     - name: get current date
       id: date
@@ -70,9 +72,9 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.ACTIONS_TOKEN }}'
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./any.tgz
-        asset_name: any.tgz
-        asset_content_type: application/x-tgz
+        asset_path: ./any.zip
+        asset_name: any.zip
+        asset_content_type: application/x-zip
     
     - name: upload win x64 single
       id: upload-win-x64
@@ -81,9 +83,9 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.ACTIONS_TOKEN }}'
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./win-x64-single.tgz
-        asset_name: win-x64-single.tgz
-        asset_content_type: application/x-tgz
+        asset_path: ./win-x64-single.zip
+        asset_name: win-x64-single.zip
+        asset_content_type: application/x-zip
     
     - name: upload win arm64 single
       id: upload-win-arm64
@@ -92,9 +94,9 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.ACTIONS_TOKEN }}'
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./win-arm64-single.tgz
-        asset_name: win-arm64-single.tgz
-        asset_content_type: application/x-tgz
+        asset_path: ./win-arm64-single.zip
+        asset_name: win-arm64-single.zip
+        asset_content_type: application/x-zip
 
     - name: upload linux x64 single
       id: upload-linux-x64
@@ -103,9 +105,9 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.ACTIONS_TOKEN }}'
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./linux-x64-single.tgz
-        asset_name: linux-x64-single.tgz
-        asset_content_type: application/x-tgz
+        asset_path: ./linux-x64-single.zip
+        asset_name: linux-x64-single.zip
+        asset_content_type: application/x-zip
     
     - name: upload linux arm64 single
       id: upload-linux-arm64
@@ -114,9 +116,9 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.ACTIONS_TOKEN }}'
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./linux-arm64-single.tgz
-        asset_name: linux-arm64-single.tgz
-        asset_content_type: application/x-tgz
+        asset_path: ./linux-arm64-single.zip
+        asset_name: linux-arm64-single.zip
+        asset_content_type: application/x-zip
     
     - name: upload osx x64 single
       id: upload-osx-x64
@@ -125,9 +127,9 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.ACTIONS_TOKEN }}'
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./osx-x64-single.tgz
-        asset_name: osx-x64-single.tgz
-        asset_content_type: application/x-tgz
+        asset_path: ./osx-x64-single.zip
+        asset_name: osx-x64-single.zip
+        asset_content_type: application/x-zip
     
     - name: upload osx arm64 single
       id: upload-osx-arm64
@@ -136,7 +138,7 @@ jobs:
           GITHUB_TOKEN: '${{ secrets.ACTIONS_TOKEN }}'
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./osx-arm64-single.tgz
-        asset_name: osx-arm64-single.tgz
-        asset_content_type: application/x-tgz
+        asset_path: ./osx-arm64-single.zip
+        asset_name: osx-arm64-single.zip
+        asset_content_type: application/x-zip
         
