@@ -23,34 +23,34 @@ jobs:
         iex ((new-object net.webclient).DownloadString('https://chocolatey.org/install.ps1'))
         choco install 7zip -y
     - name: restore
-      run: 
-        dotnet restore ./client/client.service & 
+      run: |
+        dotnet restore ./client/client.service
         dotnet restore ./server/server.service
         
     - name: publish
-      run: 
-        mkdir publish &&
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/any/client &&
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/any/server &&
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/win-x64-single/client	-r win-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/win-x64-single/server	-r win-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/win-arm64-single/client	-r win-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/win-arm64-single/server	-r win-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/linux-x64-single/client	-r linux-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/linux-x64-single/server	-r linux-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/linux-arm64-single/client	-r linux-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/linux-arm64-single/server	-r linux-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/osx-x64-single/client	-r osx-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/osx-x64-single/server	-r osx-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/osx-arm64-single/client	-r osx-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/osx-arm64-single/server	-r osx-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true &&
-        7z a -tzip any.zip ./publish/any * &&
-        7z a -tzip win-x64-single.zip ./publish/win-x64-single * &&
-        7z a -tzip win-arm64-single.zip ./publish/win-arm64-single * &&
-        7z a -tzip linux-x64-single.zip ./publish/linux-x64-single * &&
-        7z a -tzip linux-arm64-single.zip ./publish/linux-arm64-single * &&
-        7z a -tzip osx-x64-single.zip ./publish/osx-x64-single * &&
-        7z a -tzip osx-arm64-single.zip ./publish/osx-arm64-single * 
+      run: |
+        mkdir publish
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/any/client
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/any/server
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/win-x64-single/client	-r win-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/win-x64-single/server	-r win-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/win-arm64-single/client	-r win-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/win-arm64-single/server	-r win-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/linux-x64-single/client	-r linux-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/linux-x64-single/server	-r linux-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/linux-arm64-single/client	-r linux-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/linux-arm64-single/server	-r linux-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/osx-x64-single/client	-r osx-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/osx-x64-single/server	-r osx-x64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/osx-arm64-single/client	-r osx-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/osx-arm64-single/server	-r osx-arm64		--self-contained true  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        7z a -tzip any.zip ./publish/any
+        7z a -tzip win-x64-single.zip ./publish/win-x64-single
+        7z a -tzip win-arm64-single.zip ./publish/win-arm64-single
+        7z a -tzip linux-x64-single.zip ./publish/linux-x64-single
+        7z a -tzip linux-arm64-single.zip ./publish/linux-arm64-single
+        7z a -tzip osx-x64-single.zip ./publish/osx-x64-single
+        7z a -tzip osx-arm64-single.zip ./publish/osx-arm64-single
     
     - name: get current date
       id: date
