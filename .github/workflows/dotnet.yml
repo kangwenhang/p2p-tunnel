@@ -27,7 +27,8 @@ jobs:
         mkdir publish
         dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/any/client
         dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/any/server
-        7z a -tzip publish/any.zip publish/any/*
+        cd publish/any-single
+        7z a -tzip publish/any.zip ./*
     - name: publish other
       if: matrix.os-version != 'any'
       run: |    
@@ -42,7 +43,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: bin-${{ matrix.os-version }}
-        path: p2p/publish
+        path: p2p/publish/${{ matrix.os-version }}-single
     
   release:
     name: Release item

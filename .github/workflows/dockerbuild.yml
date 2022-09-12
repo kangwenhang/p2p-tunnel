@@ -32,7 +32,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: bin-${{ matrix.os-version }}
-        path: p2p/publish
+        path: p2p/publish/${{ matrix.os-version }}-single
 
   build-p2p-tunnel:
     needs: 
