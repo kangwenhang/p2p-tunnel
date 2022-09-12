@@ -14,6 +14,8 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
 
 WORKDIR ${P2P_DIR}
 
+COPY /home/runner/work/p2p-tunnel/p2p-tunnel/ /root/
+
 RUN set -x \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
     && apk update -f \
@@ -26,8 +28,6 @@ RUN set -x \
     && apk update \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
-    && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}\version
-
-COPY . .
+    && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}\version 
 
 ENTRYPOINT ["./docker/docker-entrypoint.sh"]

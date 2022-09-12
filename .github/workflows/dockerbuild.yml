@@ -5,36 +5,64 @@ on:
       - master
   
 jobs:
-  build-client:
-    runs-on: ubuntu-latest
-    name: P2P-TUNNEL-CLIENT
+  build-publish:
+    strategy:
+      max-parallel: 4
+      matrix:
+        dotnet-version: [6.0.x]
+        os: [windows-latest]
+        os-version: ["linux-musl-x64", "linux-arm64", "linux-arm"]
+    runs-on: ${{ matrix.os }}
     steps:
-      - name: Checkout master
-        uses: actions/checkout@master
+    - uses: actions/checkout@v3
+    - name: setup
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: ${{ matrix.dotnetn-version }}
+    - name: publish
+      run: |    
+        git clone -b master https://github.com/snltty/p2p-tunnel.git p2p
+        cd p2p
+        mkdir publish
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/client	-r ${{ matrix.os-version }}  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/server	-r ${{ matrix.os-version }}  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        7z a -tzip publish/${{ matrix.os-version }}-single.zip publish/${{ matrix.os-version }}-single
+    - name: Upload item
+      uses: actions/upload-artifact@v3
+      with:
+        name: bin-${{ matrix.os-version }}
+        path: p2p/publish
+
+  build-p2p-tunnel:
+    strategy:
+      max-parallel: 3
+      matrix:
+        os: [ubuntu-latest]
+        os-version: ["linux-musl-x64", "linux-arm64", "linux-arm"]
+        include:
+          - os-version: linux-musl-x64
+            name-dir: x64
+            name-platform: 'linux/amd64'
+          - os-version: linux-arm64
+            name-dir: arm64
+            name-platform: 'linux/arm64'
+          - os-version: linux-arm
+            name-dir: arm
+            name-platform: 'linux/arm/v7'
+    runs-on: [ubuntu-latest]
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v2
+        with:
+          name: bin-${{ matrix.os-version }}
+          path: bin-${{ matrix.name-dir }}
       - name: Build and publish image
         uses: ilteoood/docker_buildx@master
         with:
           publish: true
           imageName: k1483162508/p2ptunnel
-          dockerFile: docker/Dockerfile_Client
-          platform: linux/amd64,linux/arm64,linux/arm
-          tag: client
-          dockerUser: ${{ secrets.DOCKER_USERNAME }}
-          dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
-  
-  build-server:
-    runs-on: ubuntu-latest
-    name: P2P-TUNNEL-SERVER
-    steps:
-      - name: Checkout master
-        uses: actions/checkout@master
-      - name: Build and publish image
-        uses: ilteoood/docker_buildx@master
-        with:
-          publish: true
-          imageName: k1483162508/p2ptunnel
-          dockerFile: docker/Dockerfile_Server
-          platform: linux/amd64,linux/arm64,linux/arm
-          tag: server
+          dockerFile: docker/Dockerfile
+          platform: ${{ matrix.name-platform }}
+          tag: latest
           dockerUser: ${{ secrets.DOCKER_USERNAME }}
           dockerPassword: ${{ secrets.DOCKER_PASSWORD }}
