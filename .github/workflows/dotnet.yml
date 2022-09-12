@@ -34,8 +34,8 @@ jobs:
         git clone -b master https://github.com/snltty/p2p-tunnel.git p2p
         cd p2p
         mkdir publish
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/client	-r ${{ matrix.os-version }}  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/server	-r ${{ matrix.os-version }}  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/client	-r ${{ matrix.os-version }} --self-contained true -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/server	-r ${{ matrix.os-version }} --self-contained true -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
         7z a -tzip publish/${{ matrix.os-version }}-single.zip publish/${{ matrix.os-version }}-single/*
     - name: Upload item
       uses: actions/upload-artifact@v3
