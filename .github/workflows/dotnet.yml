@@ -22,6 +22,8 @@ jobs:
     - name: publish any
       if: matrix.os-version == 'any'
       run: |
+        git clone -b master https://github.com/snltty/p2p-tunnel.git p2p
+        cd p2p
         mkdir publish
         dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/any/client
         dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/any/server
@@ -29,6 +31,8 @@ jobs:
     - name: publish other
       if: matrix.os-version != 'any'
       run: |    
+        git clone -b master https://github.com/snltty/p2p-tunnel.git p2p
+        cd p2p
         mkdir publish
         dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/client	-r ${{ matrix.os-version }}  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
         dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/server	-r ${{ matrix.os-version }}  -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
