@@ -26,8 +26,7 @@ jobs:
         mkdir publish
         dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/client	-r ${{ matrix.os-version }} --self-contained true -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
         dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/server	-r ${{ matrix.os-version }} --self-contained true -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
-        cd publish/${{ matrix.os-version }}-single
-        7z a -tzip publish/single.zip *
+        7z a -tzip publish/${{ matrix.os-version }}-single.zip ./public/publish/${{ matrix.os-version }}-single/*
     - name: Upload item
       uses: actions/upload-artifact@v3
       with:
@@ -35,21 +34,6 @@ jobs:
         path: p2p/publish
 
   build-p2p-tunnel:
-    strategy:
-      max-parallel: 3
-      matrix:
-        os: [ubuntu-latest]
-        os-version: ["linux-musl-x64", "linux-arm64", "linux-arm"]
-        include:
-          - os-version: linux-musl-x64
-            name-dir: x64
-            name-platform: 'linux/amd64'
-          - os-version: linux-arm64
-            name-dir: arm64
-            name-platform: 'linux/arm64'
-          - os-version: linux-arm
-            name-dir: arm
-            name-platform: 'linux/arm/v7'
     needs: 
     - build-publish
     runs-on: [ubuntu-latest]
@@ -57,10 +41,19 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/download-artifact@v2
         with:
-          name: bin-${{ matrix.os-version }}
+          name: bin-linux-musl-x64
+          path: docker
+      - uses: actions/download-artifact@v2
+        with:
+          name: bin-linux-arm64
+          path: docker
+      - uses: actions/download-artifact@v2
+        with:
+          name: bin-linux-arm
           path: docker
       - name: publish
-        run: |    
+        run: |
+          cd docker    
           ls
       - name: Build and publish image
         uses: ilteoood/docker_buildx@master
@@ -68,7 +61,7 @@ jobs:
           publish: true
           imageName: k1483162508/p2ptunnel
           dockerFile: docker/Dockerfile
-          platform: ${{ matrix.name-platform }}
+          platform: linux-arm64, linux/arm64, linux/arm/v7
           tag: latest
           dockerUser: ${{ secrets.DOCKER_USERNAME }}
           dockerPassword: ${{ secrets.DOCKER_PASSWORD }}

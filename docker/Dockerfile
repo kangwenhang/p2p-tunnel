@@ -14,7 +14,7 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
 
 WORKDIR ${P2P_DIR}
 
-COPY /docker/single.zip /p2p/single.zip
+COPY /docker/ /p2p/
 
 RUN set -x \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
@@ -31,8 +31,18 @@ RUN set -x \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
     && npm install -g pm2 \
+    if [ `uname -m` = 'x86_64' ]; \
+    then \
+      mv /p2p/bin-linux-musl-x64-single.zip /p2p/single.zip \
+    elif [ `uname -m` = 'aarch64' ]; \
+    then \
+      mv /p2p/bin-linux-arm64-single.zip /p2p/single.zip \
+    else \
+      mv /p2p/bin-linux-arm-single.zip /p2p/single.zip \
+    fi \
     && unzip /p2p/single.zip \
     && rm -rf /p2p/single.zip \
-    && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}/version 
+    && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}/version \
+    && chmod -R 777 ${P2P_DIR}/version
 
-ENTRYPOINT ["./version/docker/docker-entrypoint.sh"]
+ENTRYPOINT ["./version/docker-entrypoint.sh"]
