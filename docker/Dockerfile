@@ -36,6 +36,8 @@ RUN set -x \
     && if [ `uname -m` = 'aarch64' ]; then mv /p2p/back/linux-arm64-single.zip /p2p/single.zip; else echo "0"; fi \
     && if [ `uname -m` = 'armv7l' ]; then mv /p2p/back/linux-arm-single.zip /p2p/single.zip; else echo "0"; fi \
     && rm -rf /p2p/back \
+    && rm -rf /root/.cache \
+    && rm -rf /root/.npm \
     && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}/version \
     && chmod -R 777 ${P2P_DIR}/version
 
