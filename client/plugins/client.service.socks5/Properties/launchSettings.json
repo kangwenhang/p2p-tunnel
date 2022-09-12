@@ -1,7 +1,0 @@
-{
-  "profiles": {
-    "client.service.socks5": {
-      "commandName": "Project"
-    }
-  }
-}
