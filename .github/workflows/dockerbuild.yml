@@ -52,7 +52,7 @@ jobs:
         with:
           name: bin-linux-arm
           path: docker
-      - name: publish
+      - name: publish dir
         run: |
           cd docker    
           ls
