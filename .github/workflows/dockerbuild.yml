@@ -58,6 +58,9 @@ jobs:
         with:
           name: bin-${{ matrix.os-version }}
           path: bin-${{ matrix.name-dir }}
+      - name: publish
+        run: |    
+          ls
       - name: Build and publish image
         uses: ilteoood/docker_buildx@master
         with:
