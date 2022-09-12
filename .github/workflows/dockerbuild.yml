@@ -27,7 +27,7 @@ jobs:
         dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/client	-r ${{ matrix.os-version }} --self-contained true -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
         dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/${{ matrix.os-version }}-single/server	-r ${{ matrix.os-version }} --self-contained true -p:DebugType=none -p:DebugSymbols=false  -p:PublishSingleFile=true -p:PublishTrimmed=true -p:IncludeNativeLibrariesForSelfExtract=true
         cd publish/${{ matrix.os-version }}-single
-        7z a -tzip publish/${{ matrix.os-version }}-single/${{ matrix.os-version }}-single.zip ./*
+        7z a -tzip ${{ matrix.os-version }}-single.zip ./*
     - name: Upload item
       uses: actions/upload-artifact@v3
       with:
