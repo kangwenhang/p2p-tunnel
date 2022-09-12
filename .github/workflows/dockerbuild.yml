@@ -49,6 +49,8 @@ jobs:
           - os-version: linux-arm
             name-dir: arm
             name-platform: 'linux/arm/v7'
+    needs: 
+    - build-publish
     runs-on: [ubuntu-latest]
     steps:
       - uses: actions/checkout@v3
