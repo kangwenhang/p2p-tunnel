@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: bin-${{ matrix.os-version }}
-        path: publish
+        path: p2p/publish
     
   release:
     name: Release item
