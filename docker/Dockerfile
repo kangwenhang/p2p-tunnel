@@ -31,7 +31,7 @@ RUN set -x \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
     && npm install -g pm2 \
-    && if [ `uname -m` = 'x86_64' ]; then mv /p2p/back/linux-musl-x64-single.zip/p2p/single.zip; else echo "0"; fi \
+    && if [ `uname -m` = 'x86_64' ]; then mv /p2p/back/linux-musl-x64-single.zip /p2p/single.zip; else echo "0"; fi \
     && if [ `uname -m` = 'aarch64' ]; then mv /p2p/back/linux-arm64-single.zip /p2p/single.zip; else echo "0"; fi \
     && if [ `uname -m` = 'armv7l' ]; then mv /p2p/back/linux-arm-single.zip /p2p/single.zip; else echo "0"; fi \
     && unzip /p2p/single.zip \
