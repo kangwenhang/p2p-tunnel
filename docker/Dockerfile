@@ -8,6 +8,7 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     LANG=zh_CN.UTF-8 \
     SHELL=/bin/bash \
     PS1="\u@\h:\w \$ " \
+    DOTNET_SYSTEM_GLOBALIZATION_INVARIANT=1 \
     P2P_DIR=/p2p \
     P2P_BRANCH=${P2P_BRANCH} \
     SERVER_CLIENT=server

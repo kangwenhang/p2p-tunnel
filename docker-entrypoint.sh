@@ -5,7 +5,11 @@ if [ ! -d ${P2P_DIR}/data ]; then
   echo -e "没有映射${P2P_DIR}/data目录给本容器，请先按教程映射${P2P_DIR}/data目录...\n"
   exit 1
 else
-  unzip /p2p/single.zip -d /p2p/data
+  if [ "`ls -A ${P2P_DIR}/data`" = "" ]; then
+    unzip /p2p/single.zip -d /p2p/data
+  else
+    echo -e "文件存在内容，不解压"
+  fi
 fi
 
 if [[ ${SERVER_CLIENT} == server ]]; then
