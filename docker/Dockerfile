@@ -32,7 +32,6 @@ RUN set -x \
     && echo "Asia/Shanghai" > /etc/timezone \
     && npm install -g pm2 \
     && unzip /p2p/single.zip \
-    && ls /p2p \
     && rm -rf /p2p/single.zip \
     && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}/version 
 
