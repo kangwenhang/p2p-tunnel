@@ -25,9 +25,9 @@ jobs:
         git clone -b master https://github.com/snltty/p2p-tunnel.git p2p
         cd p2p
         mkdir publish
-        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/any/client
-        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/any/server
-        cd publish/any
+        dotnet publish ./client/client.service -c release -f net6.0 -o ./publish/any-single/client
+        dotnet publish ./server/server.service -c release -f net6.0 -o ./publish/any-single/server
+        cd publish/any-single
         7z a -tzip publish/any.zip ./*
     - name: publish other
       if: matrix.os-version != 'any'
