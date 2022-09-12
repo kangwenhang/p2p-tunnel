@@ -14,7 +14,7 @@ ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
 
 WORKDIR ${P2P_DIR}
 
-COPY /docker/ /p2p/
+COPY /docker/ /p2p/back
 
 RUN set -x \
     && sed -i 's/dl-cdn.alpinelinux.org/mirrors.aliyun.com/g' /etc/apk/repositories \
@@ -30,13 +30,11 @@ RUN set -x \
     && apk update \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
-    && ls /p2p \
     && npm install -g pm2 \
-    && if [ `uname -m` = 'x86_64' ]; then mv /p2p/bin-linux-musl-x64-single.zip /p2p/single.zip; else echo "0"; fi \
-    && if [ `uname -m` = 'aarch64' ]; then mv /p2p/bin-linux-arm64-single.zip /p2p/single.zip; else echo "0"; fi \
-    && if [ `uname -m` = 'armv7l' ]; then mv /p2p/bin-linux-arm-single.zip /p2p/single.zip; else echo "0"; fi \
+    && if [ `uname -m` = 'x86_64' ]; then mv /p2p/back/linux-musl-x64-single.zip/p2p/single.zip; else echo "0"; fi \
+    && if [ `uname -m` = 'aarch64' ]; then mv /p2p/back/linux-arm64-single.zip /p2p/single.zip; else echo "0"; fi \
+    && if [ `uname -m` = 'armv7l' ]; then mv /p2p/back/linux-arm-single.zip /p2p/single.zip; else echo "0"; fi \
     && unzip /p2p/single.zip \
-    && rm -rf /p2p/single.zip \
     && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}/version \
     && chmod -R 777 ${P2P_DIR}/version
 
