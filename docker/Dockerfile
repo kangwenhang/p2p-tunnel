@@ -24,10 +24,12 @@ RUN set -x \
                              libstdc++ \
                              libintl \
                              git \
+                             nodejs \
     && rm -rf /var/cache/apk/* \
     && apk update \
     && ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime \
     && echo "Asia/Shanghai" > /etc/timezone \
-    && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}\version 
+    && npm install -g pm2 \
+    && git clone -b ${P2P_BRANCH} ${P2P_URL} ${P2P_DIR}/version 
 
-ENTRYPOINT ["./docker/docker-entrypoint.sh"]
+ENTRYPOINT ["./version/docker/docker-entrypoint.sh"]
