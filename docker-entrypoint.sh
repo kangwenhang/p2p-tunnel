@@ -7,8 +7,10 @@ if [ ! -d ${P2P_DIR}/data ]; then
 else
   if [ "`ls -A ${P2P_DIR}/data`" = "" ]; then
     unzip /p2p/single.zip -d /p2p/data
+    chmod -R 777 /p2p/data
   else
     echo -e "文件存在内容，不解压"
+    chmod -R 777 /p2p/data
   fi
 fi
 
